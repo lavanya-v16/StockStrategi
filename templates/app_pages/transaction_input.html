@@ -1,0 +1,109 @@
+{% extends 'app_pages/base.html' %}
+
+{% block content %}
+
+    <h2 class="text-xl font-semibold mx-1">Enter Transaction details: </h2>
+    <br>
+    <div class="w-full mx-2 max-w-sm bg-white border border-gray-900 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 ">
+        <form action="#" method="post" id="myForm">
+            <div>
+                <label for="stockname" class="mx-1 block mb-2 text-sm font-medium text-black dark:text-white">Stock name</label>
+                <input type="text" name="stock-name" placeholder="enter stock name" class=" bg-gray-50 border-4 border-black text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div>
+                <label for="qty" class="block mb-2 text-sm font-medium text-black dark:text-white">Quantity</label>
+                <input type="number" name= "stock-quantity" placeholder="Enter qty"  min=1 class="bg-gray-50 border-4 border-black text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div>
+                <label for="date" class="block mb-2 text-sm font-medium text-black dark:text-white">Transaction Date</label>
+                <input type="date" name="start-date" class="bg-gray-50 border-4 border-black text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <br>
+            <div class="space-x-0 flex relative">
+                    <input type="submit" name="buy" value="Buy" class="float-left w-full bg-gray-600 text-black font-semibold px-4 py-4 rounded-r-lg cursor-pointer border-4 border-white">
+                    <input type="submit" name="sell" value="Sell" class="float-left  w-full bg-gray-600 text-black font-semibold px-4 py-4 rounded-l-lg  cursor-pointer border-4 border-white">
+            </div>
+        </form>
+    </div>
+    <br>
+        
+        
+        <form method="post" action="#">
+                <input type="submit" name="thistory" value="See Transaction history" class=" mx-1 bg-blue-900 text-white font-semibold px-4 py-1 rounded cursor-pointer">
+                <input type="submit" name="portfolio" value="Go to Portfolio" class=" bg-blue-900 text-white font-semibold px-4 py-1 rounded cursor-pointer">
+        </form>
+                <br>
+        
+
+    <br>
+    <h2 class="text-xl font-semibold mx-1">Transaction details: </h2>
+    <br>
+    <input type="text" name="search" id="search" placeholder="Search stock name" class="mx-1 px-2 border border-black rounded font-bold"/>
+    <br>
+    <br>
+    <div class="mx-2">
+        <table id="stable" style="width: 100%;" class="table-fixed border-collapse border border-black " >
+            <tr class="hover:bg-gray-200 text-xl">
+                <th class="border border-black px-4 py-2">Index</th>
+                <th class="border border-black px-4 py-2"> Username</th>
+                <th class="border border-black px-4 py-2"> Stock Name
+                    <select class="table-filter">
+                        <option value="all"></option>
+                    </select>
+                </th>
+                <th class="border border-black px-4 py-2">Quantity</th>
+                <th class="border border-black px-4 py-2">Buy Date
+                    <select class="table-filter">
+                        <option value="all"></option>
+                    </select>
+                </th>
+                <th class="border border-black px-4 py-2">Buy price</th>
+                <th class="border border-black px-4 py-2">Total investement</th>
+            </tr>
+
+            <tbody>
+            {% for row in rows %}
+                <tr class="hover:bg-blue-800 hover:text-white font-medium">
+                    <th class="border border-black px-4 py-2">{{loop.index}}</th>
+                    <th class="border border-black px-4 py-2">{{row[1]}}</th>
+                    <th class="border border-black px-4 py-2">{{row[2]}}</th>
+                    <th class="border border-black px-4 py-2">{{row[3]}}</th>
+                    <th class="border border-black px-4 py-2">{{row[4]}}</th>
+                    <th class="border border-black px-4 py-2">{{row[5]}}</th>
+                    <th class="border border-black px-4 py-2">{{row[6]}}</th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <form method="post" id="logoutform">
+        <input type="submit" name="logout" value="Logout" class="mx-1 bg-blue-900 text-white font-semibold px-4 py-1 rounded cursor-pointer">
+    </form>
+    <script>
+        const searchInput= document.getElementById("search")
+        const rows1= document.querySelectorAll("#stable tbody tr")
+
+    searchInput.addEventListener('keyup', function(event){
+        // console.log(event);
+        const q=event.target.value.toLowerCase();
+        rows1.forEach((row2)=>{
+            console.log(row2.querySelector('th:nth-child(3)'))
+            row2.querySelector('th:nth-child(3)').textContent.toLowerCase().startsWith(q) ? (row2.style.display="table-row") : 
+            (row2.style.display='none')
+        });
+    });
+    </script>
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+
+{% endblock %}
+
+
+
+
+
+
