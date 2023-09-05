@@ -23,9 +23,9 @@ def login():
             listofpassword=cur.fetchall()
             userpasswords=[row[0] for row in listofpassword]
             # print("userpasswords", userpasswords[0])
-            # 
+            #
             # print("passwordhash",password_hash)
-            if (login and user in usernames): 
+            if (login and user in usernames):
                 if check_password_hash(userpasswords[0],pswd):
                     return redirect(url_for("transaction_route.transaction_input",username=user))
                 else:

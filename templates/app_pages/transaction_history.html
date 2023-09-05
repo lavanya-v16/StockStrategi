@@ -1,0 +1,86 @@
+{% extends 'app_pages/base.html' %}
+
+
+{% block content %}
+
+<body>
+
+
+    <h2 class="text-xl font-semibold mx-1">Transaction details: </h2>
+    <br>
+    <form method="post" >
+        <input type="text" name="search" id="search" placeholder="Search stock name" class="mx-1 px-2 border border-black rounded font-bold"/>
+        <input type="submit" name="goback" id="back-button" value="Go back" class="mx-1 bg-blue-900 text-white font-semibold px-4 py-1 rounded cursor-pointer">
+    </form>
+    <br>
+    <br>
+    <div class="mx-2">
+        <table id="stable" style="width: 100%;" class="table-fixed border-collapse border border-black " >
+            <tr class="hover:bg-gray-200 text-xl">
+                <th class="border border-black px-4 py-2">Index</th>
+                <th class="border border-black px-4 py-2"> Username</th>
+                <th class="border border-black px-4 py-2"> Stock Name
+                    <select class="table-filter">
+                        <option value="all"></option>
+                    </select>
+                </th>
+                <th class="border border-black px-4 py-2">Quantity</th>
+                <th class="border border-black px-4 py-2">Buy Date
+                    <select class="table-filter">
+                        <option value="all"></option>
+                    </select>
+                </th>
+                <th class="border border-black px-4 py-2">Buy price</th>
+                <th class="border border-black px-4 py-2">Total investement</th>
+            </tr>
+
+            <tbody>
+            {% for row in rows %}
+                <tr class="hover:bg-blue-800 hover:text-white font-medium">
+                    <th class="border border-black px-4 py-2">{{loop.index}}</th>
+                    <th class="border border-black px-4 py-2">{{row[1]}}</th>
+                    <th class="border border-black px-4 py-2">{{row[2]}}</th>
+                    <th class="border border-black px-4 py-2">{{row[3]}}</th>
+                    <th class="border border-black px-4 py-2">{{row[4]}}</th>
+                    <th class="border border-black px-4 py-2">{{row[5]}}</th>
+                    <th class="border border-black px-4 py-2">{{row[6]}}</th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <form method="post" id="logoutform">
+        <input type="submit" name="logout" value="Logout" class="mx-1 bg-blue-900 text-white font-semibold px-4 py-1 rounded cursor-pointer">
+    </form>
+    <script>
+        const searchInput= document.getElementById("search")
+        const rows1= document.querySelectorAll("#stable tbody tr")
+
+    searchInput.addEventListener('keyup', function(event){
+        // console.log(event);
+        const q=event.target.value.toLowerCase();
+        rows1.forEach((row2)=>{
+            console.log(row2.querySelector('th:nth-child(3)'))
+            row2.querySelector('th:nth-child(3)').textContent.toLowerCase().startsWith(q) ? (row2.style.display="table-row") : 
+            (row2.style.display='none')
+        });
+    });
+    </script>
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+
+
+</body>
+
+{% endblock %}
+
+
+
+
+
+
+

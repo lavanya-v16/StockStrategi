@@ -3,12 +3,14 @@ from routes.login import login_route
 from routes.create import create_route
 from routes.transaction_input import transaction_route
 from routes.portfolio import portfolio_route
+from routes.transaction_history import transactionhistory_route
 
 app=Flask(__name__)
 app.register_blueprint(login_route)
 app.register_blueprint(create_route)
 app.register_blueprint(transaction_route)
 app.register_blueprint(portfolio_route)
+app.register_blueprint(transactionhistory_route)
 
 
 app.config['SECRET_KEY']='random key'
