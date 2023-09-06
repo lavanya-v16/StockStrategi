@@ -11,11 +11,13 @@ cur=con.cursor()
 def transaction_history(username):
     if request.method=="POST":
         back=request.form.get("goback")
+        log=request.form.get("logout")
         if back:
             print("inside back")
             return redirect(url_for("transaction_route.transaction_input",username=username))
+        if log:
+            return redirect(url_for("home"))
     con.row_factory = sqlite3.Row
     cur.execute("SELECT rowid, * from Stockuser where username=?", (username,))
     rows = cur.fetchall()
-    print(rows)
     return render_template("app_pages/transaction_history.html", rows=rows)

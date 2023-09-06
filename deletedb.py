@@ -31,3 +31,16 @@ conn.execute('DROP TABLE User1')
 print("db dropped succesfully")
         
 conn.close()
+
+#################################################################
+
+
+import sqlite3
+
+conn=sqlite3.connect('database.db')
+print("Connected to database succesfully")
+conn.execute('DROP TABLE Profitloss')
+
+print("db dropped succesfully")
+        
+conn.close()
