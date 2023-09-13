@@ -1,23 +1,15 @@
-from flask import Flask, render_template, redirect, url_for, Blueprint, request,flash
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, render_template, Blueprint
 import sqlite3
+from db_manager import DatabaseManager, StockManager
 
 transactionhistory_route = Blueprint("transactionhistory_route", __name__)
 
-con=sqlite3.connect('database.db',check_same_thread=False)
-cur=con.cursor()
 
-@transactionhistory_route.route("/transaction history/<username>", methods=["POST", "GET"])
+@transactionhistory_route.route("/transaction history/<username>", methods=["GET"])
 def transaction_history(username):
-    if request.method=="POST":
-        back=request.form.get("goback")
-        log=request.form.get("logout")
-        if back:
-            print("inside back")
-            return redirect(url_for("transaction_route.transaction_input",username=username))
-        if log:
-            return redirect(url_for("home"))
-    con.row_factory = sqlite3.Row
-    cur.execute("SELECT rowid, * from Stockuser where username=?", (username,))
-    rows = cur.fetchall()
+    print("hi")
+    db_manager = DatabaseManager('database.db')
+    stock_manager = StockManager(db_manager)
+    rows=stock_manager.get_stock_user(username)
+    print("bye")
     return render_template("app_pages/transaction_history.html", rows=rows)

@@ -8,7 +8,7 @@
         
 # conn.close()
 
-# ########################################################################
+########################################################################
 
 # import sqlite3
 
@@ -19,7 +19,7 @@
         
 # conn.close()
 
-# #####################################################################
+#####################################################################
 
 # import sqlite3
 
@@ -31,14 +31,24 @@
         
 # conn.close()
 
-##########################################################################
+###################################################################
 
-import sqlite3
+# import sqlite3
 
-conn=sqlite3.connect('database.db')
-print("Connected to database succesfully")
+# conn=sqlite3.connect('database.db')
+# print("Connected to database succesfully")
         
-conn.execute('CREATE TABLE Profitloss (username TXT, stockname TXT , qty INT , buydate TEXT ,sellprice REAL, PROFIT_LOSS REAL )')
-print("db created succesfully")
+# conn.execute('CREATE TABLE Profitloss (username TXT, stockname TXT , qty INT , buydate TEXT ,sellprice REAL, PROFIT_LOSS REAL )')
+# print("db created succesfully")
         
-conn.close()
+# conn.close()
+
+from db_manager import DatabaseManager
+
+db_manager=DatabaseManager('database.db')
+# db_manager.create_table('Stockuser')
+# db_manager.create_table('Portfoliouser')
+# db_manager.create_table('Profitloss')
+# db_manager.create_table('User1')
+
+db_manager.create_table("FiftyTwoWeek")

@@ -34,7 +34,7 @@
             <br>
             <div class="flex mx-20">
                 <form method="post" class="flex">
-                    <input type="text" name="search" id="search" placeholder="Search stk name" class="mx-1 px-2 border border-black rounded font-bold"/>
+                    <input type="text" name="search" id="search" placeholder="Search stock name" class="mx-1 px-2 border border-black rounded font-bold"/>
                 </form>
                 <div class="ml-auto flex">
                     <form method="post">
@@ -45,8 +45,26 @@
                     <br>
             </div>
             <br>
-            <div class="mx-20 ">
-                <table id="stable" class="w-full table-fixed border-collapse">
+            <div class="mx-10 ">
+                <table id="stable" class="w-full table-auto border-collapse border-4 border-blue-900">
+                    <tr class="text-xl">
+                        <th class="border border-black px-4 py-2">Amount Invested</th>
+                        <th class="border border-black px-4 py-2">Current Value</th>
+                        <th class="border border-black px-4 py-2">Overall Gain/Loss</th>
+                    </tr>
+                
+                    <tbody>
+                        <tr class="hover:bg-blue-800 hover:text-white font-medium">
+                            <td class="border border-black px-4 py-2">{{ "%.2f"|format(total_investment)}}</td>
+                            <td class="border border-black px-4 py-2">{{ "%.2f"|format(total_current_value) }}</td>
+                            <td class="border border-black px-4 py-2">{{ "%.2f"|format(total_current_value - total_investment) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <div class="mx-10 ">
+                <table id="stable" class="w-full table-auto border-collapse border-4 border-blue-900">
                     <tr class="text-xl">
                         <th class="border border-black px-4 py-2">Index</th>
                         <th class="border border-black px-4 py-2">Username</th>
@@ -57,20 +75,22 @@
                         <th class="border border-black px-4 py-2">Current Market Price</th>
                         <th class="border border-black px-4 py-2">Value at CMP</th>
                         <th class="border border-black px-4 py-2">Profit/Loss</th>
+                        <th class="border border-black px-4 py-2">Profit/Loss Percentage</th>
                     </tr>
                 
                     <tbody>
                         {% for row in rows %}
                         <tr class="hover:bg-blue-800 hover:text-white font-medium">
                             <td class="border border-black px-4 py-2">{{ loop.index }}</td>
+                            <td class="border border-black px-4 py-2">{{ row[0] }}</td>
                             <td class="border border-black px-4 py-2">{{ row[1] }}</td>
-                            <td class="border border-black px-4 py-2">{{ row[2] }}</td>
-                            <td class="border border-black px-4 py-2">{{ row[3] }}</td>
-                            <td class="border border-black px-4 py-2">{{ row[4] }}</td>
-                            <td class="border border-black px-4 py-2">{{ row[5] }}</td>
-                            <td class="border border-black px-4 py-2">{{ row[6] }}</td>
+                            <td class="border border-black px-4 py-2">{{ '{:,}'.format(row[2]) }}</td>
+                            <td class="border border-black px-4 py-2">{{ '{:,}'.format(row[3]) }}</td>
+                            <td class="border border-black px-4 py-2">{{ '{:,}'.format(row[4]) }}</td>
+                            <td class="border border-black px-4 py-2">{{ '{:,}'.format(row[5]) }}</td>
+                            <td class="border border-black px-4 py-2">{{ '{:,}'.format(row[6]) }}</td>
                             <td class="border border-black px-4 py-2">{{ row[7] }}</td>
-                            <td class="border border-black px-4 py-2">{{ row[8] }}</td>
+                            <td class="border border-black px-4 py-2">{{ "%.2f"|format((row[7]/total_investment)*100) }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -95,8 +115,8 @@
     searchInput.addEventListener('keyup', function(event){
         const q=event.target.value.toLowerCase();
         rows1.forEach((row2)=>{
-            console.log(row2.querySelector('th:nth-child(3)'))
-            row2.querySelector('th:nth-child(3)').textContent.toLowerCase().startsWith(q) ? (row2.style.display="table-row") : 
+            console.log(row2.querySelector('td:nth-child(3)'))
+            row2.querySelector('td:nth-child(3)').textContent.toLowerCase().startsWith(q) ? (row2.style.display="table-row") : 
             (row2.style.display='none')
         });
     });

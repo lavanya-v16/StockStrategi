@@ -1,0 +1,180 @@
+{% extends 'app_pages/base.html' %}
+
+{% block content %}
+
+<!-- This is the portfolio distribution graph -->
+<form method="post" >
+  <input type="submit" name="interactive" value="Interactive" class="mx-1 bg-blue-900 text-white font-semibold px-4 py-1 rounded cursor-pointer">
+</form>
+<div id="output">
+<div class="flex">
+  <div class="flex w-1/5 mx-2">
+      <!-- <div class=" mx-2 max-w-3xl bg-white border border-gray-900 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 "> -->
+      <div>  
+        <h2 class="w-full text-xl font-bold mx-1">Portfolio distribution: </h2>
+          <div style="width: 250px ">
+              <canvas id="myChart"></canvas>
+          </div>
+            
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            
+          <script>
+            const ctx = document.getElementById('myChart');
+            var xValues = {{sname | tojson}};
+            var yValues = {{distribution | tojson}};
+            var barColors = ["#164e63", "#172554","#06b6d4","#a5f3fc","#0e7490","#22d3ee"];
+            a=new Chart("myChart", {
+              type: "doughnut",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: "World Wide Wine Production"
+                }
+              }
+            });
+            a.clear()
+          </script>
+      </div>
+  </div>
+
+
+<!-- This is the profit distribution graph -->
+<div class="flex w-3/5 mx-2">
+    <!-- <div class=" mx-2 max-w-3xl bg-white border border-gray-900 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"> -->
+      <div>  
+      <h2 class="w-full text-xl font-bold mx-1">Profit distribution: </h2>
+        <div style="width: 450px">
+            <canvas id="myChart1"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    var xValues = {{sname | tojson}}
+    var yValues = {{pl | tojson}};
+
+    var positiveValues = yValues.map(value => value >= 0 ? value : 0);
+    var negativeValues = yValues.map(value => value < 0 ? value : 0);
+
+    // var ctx = document.getElementById('myChart1').getContext('2d');
+
+    var myChart = new Chart("myChart1", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+                label: 'Positive Values',
+                data: positiveValues,
+                backgroundColor: 'green',
+                barPercentage: 3,
+                categoryPercentage: 0.5
+            },
+            {
+                label: 'Negative Values',
+                data: negativeValues,
+                backgroundColor: 'red',
+                barPercentage: 3,
+                categoryPercentage: 0.5
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true,
+                    max: Math.max(...positiveValues) 
+                }
+            },
+        }
+    });
+</script>
+
+
+
+<!-- This is the top gainers -->
+
+<div class=" w-3/5 mx-20">
+  <h2 class="w-full text-xl font-bold mx-1">TOP GAINERS: </h2>
+  <table id="stable" class="w-1/5 table-auto border-separate border-4 border-blue-900 height:1/5">
+    <tr class="text-xl">
+        <th class="border border-black px-4 py-2">Stock Name</th>
+        <th class="border border-black px-4 py-2">Unrealized Profit</th>
+    </tr>
+
+    <tbody>
+      {% for i in range (top_sname|length) %}
+        <tr class="hover:bg-blue-800 hover:text-white font-medium">
+            <td class="border border-black px-4 py-2">{{top_sname[i]}}</td>
+            <td class="border border-black px-4 py-2">{{top_price[i]}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+</div>
+
+
+<!-- This is the top losers -->
+<div class=" w-3/5 mx-20">
+  <h2 class="w-full text-xl font-bold mx-1">TOP LOSERS: </h2>
+  <table id="stable" class="w-1/5 table-auto border-separate border-4 border-blue-900 height:1/5">
+    <tr class="text-xl">
+        <th class="border border-black px-4 py-2">Stock Name</th>
+        <th class="border border-black px-4 py-2">Unrealized Profit</th>
+    </tr>
+
+    <tbody>
+      {% for i in range (top_sname|length) %}
+        <tr class="hover:bg-blue-800 hover:text-white font-medium">
+            <td class="border border-black px-4 py-2">{{last_sname[i]}}</td>
+            <td class="border border-black px-4 py-2">{{last_price[i]}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+</div>
+
+</div>
+{{high}}
+{{low}}
+{{cmp}}
+
+<div class=" w-3/5 mx-20">
+  <h2 class="w-full text-xl font-bold mx-1">52 week Information </h2>
+  <table id="stable" class="w-1/5 table-auto border-separate border-4 border-blue-900 height:1/5">
+    <tr class="text-xl">
+        <th class="border border-black px-4 py-2">Stock Name</th>
+        <th class="border border-black px-4 py-2">52 Week High</th>
+        <th class="border border-black px-4 py-2">52 Week Low</th>
+        <th class="border border-black px-4 py-2">Current Market Price</th>
+    </tr>
+
+    <tbody>
+      {% for i in range (high|length) %}
+        <tr class="hover:bg-blue-800 hover:text-white font-medium">
+          <td class="border border-black px-4 py-2">{{sname[i]}}</td>
+            <td class="border border-black px-4 py-2">{{high[i]}}</td>
+            <td class="border border-black px-4 py-2">{{low[i]}}</td>
+            <td class="border border-black px-4 py-2">{{cmp[i]}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+
+
+{% endblock %}
+
+
+
+
+
